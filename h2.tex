@@ -107,53 +107,63 @@
  
 \section{Prove S is regular}
 
-\noindent Lemma. For any finite string 's', $\exists$ a DFA that recognizes exactly the string 's'.
+\noindent Lemma. For any finite string $s$, $\exists$ a DFA that recognizes exactly the string 's'.
 
-\noindent Corallary. $\forall s_j \in S, \exists M_j$ s.t. $L(M_j) = \{s_j\}$.
+\noindent Corallary. $\forall s_j \in S, \exists \ M_j$ s.t. $L(M_j) = \{s_j\}$. In other words, for all strings s in S, there exists a DFA M that recognizes the language containing the set $\{s\}$.
 
-\noindent [For all strings s in S, there exists a DFA M that recognizes the language containing the set $\{s\}$]
-
-\noindent Then $\forall s_i \in S, \exists L_j$ s.t. L is regular.
+\noindent Then $\forall s_i \in S . \exists \ L_j$ s.t. $L$ is regular.
 
 \noindent By the union closure property, $ L_S = \cup L_j$ is regular.
 
-\noindent Therefore there is a regular languge L which recognizes $L_S$, i.e. $L(M) = S$.
+\noindent Therefore there is a regular languge $L_S$ which recognizes $S$, i.e. $L_S(M) = S$.
 
 \section{Prove L is regular}
 
-\noindent Theorem. the language L is regular when $L = \{s_1 \cdots s_n | n \geq \N$ and $n \geq 1$ and each $s_j \in S$ is accepted by $L_S \}$.
+\noindent Theorem. The language L is regular, where $L = \{s_1 \cdots s_n | n \geq \N$ and $n \geq 1$ and each $s_j \in S$ is accepted by $L_S \}$.
 
 \noindent In other worlds, L can be recognized by a DFA.
 
-\noindent We will show 1) $L(N) \subseteq L*$ and 2) $L(N) \supseteq L*$.
+\noindent We will show 1) $L(N) \subseteq L$ and 2) $L(N) \supseteq L$, by which $L(N)=L$.
 
-\section{One}
+\section{Definition of N}
 
-\noindent Assume $w = s_1, \cdots, s_k$ s.t. $w \in L$ where $s_w \cdots s_k \in S$.
+We will define an NFA $N$ which recognizes $L$ by starting with the DFA $M$ that recognizes $L_S$.
 
-\noindent We show $N$ accepts $w$ by induction on $k$.
+\noindent $M = \{Q, \Sigma, \delta, q_1, F \}$
 
-\noindent Base Cases
+\noindent $N = \{Q^\prime, \Sigma, \delta^\prime, q_0, F \}$
 
-\noindent $k = 1 \to w = s_1$ because $s_j \in S \to$ because $\delta(s_0, \epsilon) = \{ q_1 \}$ there exists a path in the original DFA from $q_1$ to some final state, then N accepts w.
-
-\noindent An input is a DFA M = $\{Q, \sigma, \delta, q_1, f \}$
-
-\noindent Our output is an NFA N =$ \{Q^\prime, \sigma, \delta^\prime, q_0, f \}$
+\noindent Where:
 
 \noindent $Q^\prime = Q \cup \{q_0\}$
 
-\begin{flalign}
+$$
 \delta^\prime(q, a) =
-	\{ \delta(q, a) \}		if q \in Q and a \neq \epsilon
-	\{ q_1 \}			if q \in F and a = \epsilon
-	\{ q_1 \}			if q = q_0 and a = \epsilon
-	\emptyset			else
-\end{flalign}
+\begin{cases}
+	\{ \delta(q, a) \}		\quad q \in Q \wedge a \neq \epsilon \\
+	\{ q_1 \}			\quad q \in F \wedge a = \epsilon \\
+	\{ q_1 \}			\quad q = q_0 \wedge a = \epsilon \\
+	\emptyset			\quad \text{else}
+\end{cases}
+$$
+
+\section{Part one}
+
+\noindent Assume $w = s_1, \cdots, s_k$ s.t. $w \in L$ where $s_1 \cdots s_k \in S$.
+
+\noindent We show $N$ accepts $w$ by induction on $k$.
+
+\medskip
+
+\noindent Base Case
+
+\noindent $k = 1 \implies w = s_1$ because $s_j \in S \implies$ because $\delta(s_0, \epsilon) = \{ q_1 \}$ there exists a path in the original DFA from $q_1$ to some final state, then N accepts w. // todo
+
+\medskip
 
 \noindent Inductive Step
 
-\noindent Let $v = v_1 \cdots v_k$ s.t. $\exists v_j \cdot v_j \in L_S$ and that $N$ accepts $V$.
+\noindent Let $v = v_1 \cdots v_k$ s.t. $\exists \ v_1 \cdots v_j \in L_S$ and $N$ accepts $v$.
 
 \noindent Let $u = u_1 \cdots u_k u_{k + 1} \in L$ and $u_j \in L_S$.
 
@@ -161,26 +171,32 @@
 
 \noindent Since $N$ accepts $u_1 \cdots u_k$ and $M$ accepts $u_{k + 1}$ then $N$ accepts $u_{k+1}$ by construction.
 
-\section{Two}
+\section{Part two}
 
-\noindent Assume $\exists w$ s.t. $N$ accepts $w$. We want to prove that $w \in L$.
+\noindent Assume $\exists \ w$ s.t. $N$ accepts $w$. We want to prove that $w \in L$.
 
-\noindent I.H. $N$ accepts $u$ and takes at most $k \epsilon$-transitions and $1 \leq k \leq n$, then $w \in L$.
+\noindent I.H. $N$ accepts $u$ and takes at most $k \ \epsilon$-transitions and $1 \leq k \leq n$, then $w \in L$.
 
 \noindent By induction on $k$.
+
+\medskip
 
 \noindent Base Case
 
 \noindent $k = 1$ then $u \in L_S$ ($M$ accepts $u$) then $u \in L$.
 
-\noindent Induction. Let $w$ s.t. $w$ is accepted by $N$ with $k \epsilon$-transitions,
+\medskip
+
+\noindent Inductive step.
+
+\noindent Let $w$ s.t. $w$ is accepted by $N$ with $k \ \epsilon$-transitions,
 
 \noindent Let $w = uv$ where $v$ is the substring read after the last $\epsilon$-transition.
 
-\noindent $u \in L(N)$ by construction by IH, so $u \in L*$.
+\noindent $u \in L(N)$ by construction by IH, so $u \in L$.
 
 \noindent $v \in L_s$, so by the definition of $u$, the computation of $q_1$ is contained inside $M$.
 
-\noindent Therefore, $w = uv \in L*$.
+\noindent Therefore, $w = uv \in L$.
 
 \end{document}
