@@ -103,17 +103,17 @@
 
 \pagestyle{head}                % put header on every page
 
-\medskip
+$\newline$
  
-\section{Prove S is regular}
+\section{Prove $L_s$ is regular}
 
-\noindent Lemma. For any finite string $s$, $\exists$ a DFA that recognizes exactly the string 's'.
+\noindent Lemma. For any finite string $s$, $\exists$ a DFA that recognizes exactly the string $s$ and no other strings.
 
-\noindent Corallary. $\forall s_j \in S, \exists \ M_j$ s.t. $L(M_j) = \{s_j\}$. In other words, for all strings s in S, there exists a DFA M that recognizes the language containing the set $\{s\}$.
+\noindent Corollary. $\forall s_j \in S \ . \ \exists \ M_j$ s.t. $L(M_j) = \{s_j\}$. In other words, for all strings s in S, there exists a DFA $M_j$ that recognizes the language containing the set $\{s\}$.
 
-\noindent Then $\forall s_i \in S . \exists \ L_j$ s.t. $L$ is regular.
+\noindent Then $\forall s_i \in S \ . \  \exists \ L_j$ s.t. $L$ is regular.
 
-\noindent By the union closure property, $ L_S = \cup L_j$ is regular.
+\noindent By the union closure property, $ L_S = \cup_{s \in S} L_j$ is regular.
 
 \noindent Therefore there is a regular languge $L_S$ which recognizes $S$, i.e. $L_S(M) = S$.
 
@@ -147,45 +147,47 @@ $$
 \end{cases}
 $$
 
+\noindent In other words, we begin with $M$ as a black box. We add a start state $q_0$ which has an $\epsilon$-transition to the original start state $q_1$. Each accept state $f \in F$ is connected to $q_1$ by an $\epsilon$-transition.
+
 \section{Part one}
 
 \noindent Assume $w = s_1, \cdots, s_k$ s.t. $w \in L$ where $s_1 \cdots s_k \in S$.
 
 \noindent We show $N$ accepts $w$ by induction on $k$.
 
-\medskip
+$\newline$
 
-\noindent Base Case
+\noindent Base Case.
 
-\noindent $k = 1 \implies w = s_1$ because $s_j \in S \implies$ because $\delta(s_0, \epsilon) = \{ q_1 \}$ there exists a path in the original DFA from $q_1$ to some final state, then N accepts w. // todo
+\noindent $k = 1 \implies w = s_1$
 
-\medskip
+\noindent Since $s_j \in S \vee \delta(s_0, \epsilon) = \{ q_1 \}$, then there exists a path from the start state $q_0$ to $q_1$, after which the original DFA M accepts w. M accepts $w \implies$ N accepts $w$.
+
+$\newline$
 
 \noindent Inductive Step
 
-\noindent Let $v = v_1 \cdots v_k$ s.t. $\exists \ v_1 \cdots v_j \in L_S$ and $N$ accepts $v$.
+\noindent Let $v = v_1 \cdots v_k$ s.t. $v_1 \cdots v_j \in L_S$ and $N$ accepts $v$.
 
-\noindent Let $u = u_1 \cdots u_k u_{k + 1} \in L$ and $u_j \in L_S$.
+\noindent I.H. Let $u = u_1 \cdots u_k u_{k + 1} \in L$ and $u_j \in L_S$.
 
 \noindent Proof.
 
-\noindent Since $N$ accepts $u_1 \cdots u_k$ and $M$ accepts $u_{k + 1}$ then $N$ accepts $u_{k+1}$ by construction.
+\noindent Since $N$ accepts $u_1 \cdots u_knductions, $ and $M$ accepts $u_{k + 1}$ then $N$ accepts $u$ by construction.
 
 \section{Part two}
 
-\noindent Assume $\exists \ w$ s.t. $N$ accepts $w$. We want to prove that $w \in L$.
+\noindent Assume $\exists \ w$ s.t. $N$ accepts $w$. We prove that $w \in L$ by induction on $k$.
 
-\noindent I.H. $N$ accepts $u$ and takes at most $k \ \epsilon$-transitions and $1 \leq k \leq n$, then $w \in L$.
+\noindent I.H. If $N$ accepts $u$ and takes at most $k \ \epsilon$-transitions and $1 \leq k \leq n$, then $w \in L$.
 
-\noindent By induction on $k$.
+$\newline$
 
-\medskip
+\noindent Base Case.
 
-\noindent Base Case
+\noindent $k = 1$. $M$ accepts $u \implies u \in L_S$ therefor $u \in L$.
 
-\noindent $k = 1$ then $u \in L_S$ ($M$ accepts $u$) then $u \in L$.
-
-\medskip
+$\newline$
 
 \noindent Inductive step.
 
@@ -193,10 +195,15 @@ $$
 
 \noindent Let $w = uv$ where $v$ is the substring read after the last $\epsilon$-transition.
 
-\noindent $u \in L(N)$ by construction by IH, so $u \in L$.
+\noindent By induction, $u \in L(N) \implies u \in L$.
 
-\noindent $v \in L_s$, so by the definition of $u$, the computation of $q_1$ is contained inside $M$.
+\noindent By the definition of $N$, $N$ will read $v$ by taking an $\epsilon$-transition from one of $M$'s accept states $f \in F$ to $q_1$. Therefore the black-box DFA $M$ must accept $v \wedge v \in L_s$.
 
 \noindent Therefore, $w = uv \in L$.
 
+\section{Conclusion}
+
+By showing 1) $L(N) \subseteq L$ and 2) $L(N) \supseteq L$ we prove that $L(N)=L$, therefore $\exists$ an NFA $N$ which recognizes $L$ and $L$ is regular.
+
+\
 \end{document}
