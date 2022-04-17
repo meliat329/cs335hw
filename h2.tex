@@ -151,7 +151,7 @@ $$
 
 \section{Part one}
 
-\noindent Assume $w = s_1, \cdots, s_k$ s.t. $w \in L$ where $s_1 \cdots s_k \in S$.
+\noindent Assume $w = s_1 \cdots s_k$ s.t. $w \in L$ where $s_1, \cdots , s_k \in S$.
 
 \noindent We show $N$ accepts $w$ by induction on $k$.
 
@@ -161,19 +161,19 @@ $\newline$
 
 \noindent $k = 1 \implies w = s_1$
 
-\noindent Since $s_j \in S \vee \delta(s_0, \epsilon) = \{ q_1 \}$, then there exists a path from the start state $q_0$ to $q_1$, after which the original DFA M accepts w. M accepts $w \implies$ N accepts $w$.
+\noindent Since $s_j \in S \wedge \delta(s_0, \epsilon) = \{ q_1 \}$, then there exists a path from the start state $q_0$ to $q_1$, after which the original DFA M accepts w. M accepts $w \implies$ N accepts $w$.
 
 $\newline$
 
 \noindent Inductive Step
 
-\noindent Let $v = v_1 \cdots v_k$ s.t. $v_1 \cdots v_j \in L_S$ and $N$ accepts $v$.
+\noindent Let $v = v_1 \cdots v_k$ s.t. $v_1, \cdots , v_j \in L_S$ and $N$ accepts $v$.
 
 \noindent I.H. Let $u = u_1 \cdots u_k u_{k + 1} \in L$ and $u_j \in L_S$.
 
 \noindent Proof.
 
-\noindent Since $N$ accepts $u_1 \cdots u_knductions, $ and $M$ accepts $u_{k + 1}$ then $N$ accepts $u$ by construction.
+\noindent Since $N$ accepts $u_1 \cdots u_k$ by induction, $M$ accepts $u_{k + 1}$ then $N$ accepts $u$ by construction.
 
 \section{Part two}
 
