@@ -1,0 +1,53 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+
+\title{HW3}
+\author{Rachel Kantor, Caspar Popova, Melia Tomlinson}
+\date{April 2022}
+
+\begin{document}
+
+\maketitle
+
+\section{Problem i}
+
+Theorem. $L$ is not regular.
+
+\noindent Proof. We will show that $L$ is not regular by the Myhill-Nerode theorem by showing that $R_L$ has an infinite number of equivalence classes.
+
+\noindent Let the set $S$ over $\Sigma *$ be $\{a^{4^k} | n \in \mathbf{N}\}$.
+
+\noindent Consider any pair of strings in $S$, $s_x = a^{4^x}$ and $s_y = a^{4^y}$ where $x \neq y$.
+
+\noindent Then we will show that, $\exists z \in \Sigma *$ such that $a^{4^x} z \in L$ and $a^{4^y} z \notin L$.
+
+\noindent Let $z=a^{3 \cdot 4^x}$. Then:
+
+\begin{align*}
+    s_x z = a^{4^x} a^{3 \cdot 4^x} \\
+    s_y z = a^{4^y} a^{3 \cdot 4^x} \\
+    |s_x z| = 4^x + 3 \cdot 4^x = 4 \cdot 4^x  = 4^{x+1} \\
+    |s_y z| = 4^y + 3 \cdot 4^x = 4^x ( 4^{y-x} - 3)
+\end{align*}
+
+\noindent We have shown that $|s_x z|$ is a power of $4$, therefore $s_x z \in L$. $|s_y x|$ is not a power of $4$ because of subtracting $3$. Therefore $s_y z \notin L$.
+
+\noindent Since $s_x z \in L \wedge s_y z \notin L$, then for any pair of strings $s_x$ and $s_y$ over $\Sigma *$, $s_x$ and $s_y$ are distinguishable. Therefore, there are an infinite number of equivalence classes, therefore by the Myhill-Nerode theorem, $L$ is not regular.
+
+\section{Problem ii}
+
+Theorem. $L$ is regular.
+
+\noindent Proof. We will show that $L$ is regular by the Myhill-Nerode theorem by showing that $R_L$ has a finite number of equivalence classes. 
+
+\noindent Let there be $5$ equivalence classes over $\Sigma *$:
+
+$a^{4k}, a^{4k+1}, a^{4k+2}, a^{4k+3}, \text{s contains b}$ where $k \in \mathbf{N}$.
+
+\noindent The equivalence classes are disjoint because the intersection of them will always be an empty set, because $(ak+b) \ \text{mod} \ a \neq 0$ if and only if $b \ \text{mod} \ a \neq 0$.
+
+\noindent Because the $5$ equivalence classes are disjoint, we have shown that $R_L$ has a finite number of equivalence classes, and therefore by the Myhill-Nerode theorem, $L$ is regular.
+
+\end{document}
+
