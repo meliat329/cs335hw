@@ -43,9 +43,15 @@ Theorem. $L$ is regular.
 
 \noindent Let there be $5$ equivalence classes over $\Sigma *$:
 
-$a^{4k}, a^{4k+1}, a^{4k+2}, a^{4k+3}, \text{s contains b}$ where $k \in \mathbf{N}$.
+\begin{align*}
+    \{a^{4k}  \ | \ k \in \mathbf{N} \}
+    \\ \{a^{4k+1}  \ | \ k \in \mathbf{N} \}
+    \\ \{a^{4k+2}  \ | \ k \in \mathbf{N} \}
+    \\ \{a^{4k+3}  \ | \ k \in \mathbf{N} \}
+    \\ \{ s \ | \ s \ \text{contains} \ b \}
+\end{align*}
 
-\noindent The equivalence classes are disjoint because the intersection of them will always be an empty set, because $(ak+b) \ \text{mod} \ a \neq 0$ if and only if $b \ \text{mod} \ a \neq 0$.
+\noindent The equivalence classes are disjoint: the last equivalence is clearly disjoint from the first four because of $b$. The first four equivalence classes are disjoint because given a string $s$ s.t. $|s| = 4k+i$, then $|s| = 4k+j$ if and only if $i=j$.
 
 \noindent Because the $5$ equivalence classes are disjoint, we have shown that $R_L$ has a finite number of equivalence classes, and therefore by the Myhill-Nerode theorem, $L$ is regular.
 
