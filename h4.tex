@@ -1,0 +1,141 @@
+\documentclass[11pt,addpoints,answers]{exam}
+
+% Packages
+\usepackage{fullpage}
+\usepackage{latexsym,amssymb,amsfonts,amsmath,mathrsfs,float, amsthm}
+\usepackage[font=small,labelfont=bf, width=.618\textwidth]{caption} % custom captions
+\usepackage{xcolor}
+\usepackage{tikz, graphics, enumerate}
+\usepackage{hyperref}
+
+
+% Paragraph indentation and spacing
+\newcommand{\parset}{
+  \setlength{\parskip}{3mm}
+    \setlength{\parindent}{0mm}}
+  
+% Probability
+  \DeclareMathOperator{\var}{Var}
+  \renewcommand{\Pr}{\mbox{\rm Pr}} 
+  \newcommand{\Exp}{{\mathbb{E}}}
+  \newcommand{\E}{\mathbb{E}}
+
+% Sets 
+  \newcommand{\R}{\mathbb{R}} % reals
+  \newcommand{\C}{\mathbb{C}} % complex numbers
+  \newcommand{\N}{\mathbb{N}} % natural numbers
+  \newcommand{\Z}{\mathbb{Z}} % integers
+  \newcommand{\F}{\mathbb{F}} % field
+  \newcommand{\K}{\mathbb K} % field
+  \newcommand{\T}{\mathbb T} % circle
+\newcommand{\B}{\mathcal{B}} % ball
+  \newcommand{\pmset}[1]{\{-1,1\}^{#1}} % hypercube in +-1 basis
+  \newcommand{\bset}[1]{\{0,1\}^{#1}} % hypercube
+  \newcommand{\sphere}[1]{S^{#1-1}} % real unit sphere of dimension #1
+  \newcommand{\ball}[1]{B_{#1}} % real unit ball of dimension $1
+  \newcommand{\Orth}[1]{O(\R^{#1})} % orthogonal group
+  \DeclareMathOperator{\im}{im} % image
+  \DeclareMathOperator{\vspan}{Span} % kernel
+  \newcommand{\1}{\mathbf{1}}
+  \DeclareMathOperator{\Cball}{\mathcal C}
+  \DeclareMathOperator{\cay}{Cay} 
+  \DeclareMathOperator{\sol}{Sol} 
+\DeclareRobustCommand{\stirling}{\genfrac\{\}{0pt}{}}
+
+% Miscellaneous
+  \newcommand{\st}{:\,} % "such that" to define sets
+  \newcommand{\ie}{{i.e.}}  
+  \newcommand{\eg}{{e.g.}} 
+  \newcommand{\eps}{\varepsilon}
+  \newcommand{\ip}[1]{\langle #1 \rangle}
+  \newcommand{\cF}{{\mathcal F}}   
+  \DeclareMathOperator{\U}{\mathcal{U}}
+  \DeclareMathOperator{\sign}{sign}
+  \newcommand{\poly}{\mbox{\rm poly}}
+  \newcommand{\ceil}[1]{\lceil{#1}\rceil}
+  \newcommand{\floor}[1]{\lfloor{#1}\rfloor}
+  \DeclareMathOperator{\Tr}{\mathsf{Tr}}
+  \DeclareMathOperator{\diag}{diag}
+  \DeclareMathOperator{\patt}{patt}
+  \DeclareMathOperator{\argmin}{arg\,min}
+  \DeclareMathOperator{\spec}{Spec}
+  \DeclareMathOperator{\enc}{\sf Enc}
+  \DeclareMathOperator{\dec}{\sf Dec}
+  \DeclareMathOperator{\diam}{diam} 
+  \DeclareMathOperator{\spn}{span} 
+  \DeclareMathOperator{\geom}{gm}
+\DeclareMathOperator{\sinc}{sinc}
+\DeclareMathOperator{\disc}{disc}
+\DeclareMathOperator*{\argmax}{arg\,max}
+  \newcommand{\infnorm}{{\ell_\infty, \ldots, \ell_\infty}}
+  \newcommand{\pnorm}{{\ell_p,\dots,\ell_p}}
+  \newcommand{\tnorm}{{\ell_t,\dots,\ell_t}}
+  
+  
+% Enviroments
+  \newcommand{\beq}{\begin{equation}}
+  \newcommand{\eeq}{\end{equation}}
+  \newcommand{\beqn}{\begin{equation*}}
+  \newcommand{\eeqn}{\end{equation*}}
+  \newcommand{\beqr}{\begin{eqnarray}}
+  \newcommand{\eeqr}{\end{eqnarray}}
+  \newcommand{\beqrn}{\begin{eqnarray*}}
+  \newcommand{\eeqrn}{\end{eqnarray*}}
+  \newcommand{\bmline}{\begin{multline}}
+  \newcommand{\emline}{\end{multline}}
+  \newcommand{\bmlinen}{\begin{multline*}}
+  \newcommand{\emlinen}{\end{multline*}}
+  
+  \makeatletter
+
+% END OF SUPPLIED VARIABLES
+
+  \chead{\large \textbf{Homework 4}}
+
+  \lhead{\small
+    \textbf{{Comp Sci 335}}}
+
+  \rhead{\small \textbf{Name}: Caspar P., Rachel K., Melia T.}
+
+  \setlength{\headheight}{20pt}
+  \setlength{\headsep}{16pt}                       
+  \headrule
+% execute homework commands
+
+\begin{document}
+
+\pagestyle{head}                % put header on every page
+
+\medskip
+ 
+\section{$L_k$ is regular}
+
+\noindent Theorem. $L_k$ is regular.
+
+\medskip
+
+\noindent Proof. We can show that a language is regular by writing a regular expression for it. The regular expression for $L_k$ is $(0 + 1)^* 1 (0 + 1)^{k-1}$. Therefore, $L_k$ is regular.
+
+\section{Every DFA for $L_k$ has exponentially many states w.r.t $k$}
+
+\noindent Theorem. Every DFA for $L_k$ has exponentially many states with respect to $k$.
+
+\medskip
+
+\noindent In other words, we will prove a lower bound on the number of states in any DFA $M$ (which has $|Q|$ states) which recognizes $L_k$: $|Q| \geq 2^k$.
+
+\medskip
+
+\noindent Proof.
+
+\noindent Consider the set of all $k$-length strings $\{0, 1\}^k$. The size of the set is $2^k$. We will prove that given any $2$ strings $x$ and $y$ in this set, there exists a string $z$ that can be appended to $x$ and $y$ such that $xz \in L_k \wedge yz \notin L_k$ or vice versa. Therefore all $x$ and $y$ are mutually distinguishable.
+
+\medskip
+
+\noindent Consider some $x, y$ where the $i$th letter of $x$, which we denote as $x_i=1$, is different than $y_i=0$ ($x_i \neq y_i$). Then, there exists a string $z$ of length $i-1$ that may be appended to $x$ and $y$ to create $x_z$ and $y_z$ such that $x_z \in L_k \wedge y_z \notin L_k$, because $x_i=1$ and $y_i=0$ are $k$ positions from the end.
+
+\medskip
+
+\noindent Because all $2^k$ strings in this set are distinguishable from each other, then any DFA for the language $L_k$ must have exponentially many states with respect to $k$.
+
+\end{document}
