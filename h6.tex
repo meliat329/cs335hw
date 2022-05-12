@@ -1,0 +1,159 @@
+\documentclass[11pt,addpoints,answers]{exam}
+
+% Packages
+\usepackage{fullpage}
+\usepackage{latexsym,amssymb,amsfonts,amsmath,mathrsfs,float, amsthm}
+\usepackage[font=small,labelfont=bf, width=.618\textwidth]{caption} % custom captions
+\usepackage{xcolor}
+\usepackage{tikz, graphics, enumerate}
+\usepackage{hyperref}
+
+
+% Paragraph indentation and spacing
+\newcommand{\parset}{
+  \setlength{\parskip}{3mm}
+    \setlength{\parindent}{0mm}}
+  
+% Probability
+  \DeclareMathOperator{\var}{Var}
+  \renewcommand{\Pr}{\mbox{\rm Pr}} 
+  \newcommand{\Exp}{{\mathbb{E}}}
+  \newcommand{\E}{\mathbb{E}}
+
+% Sets 
+  \newcommand{\R}{\mathbb{R}} % reals
+  \newcommand{\C}{\mathbb{C}} % complex numbers
+  \newcommand{\N}{\mathbb{N}} % natural numbers
+  \newcommand{\Z}{\mathbb{Z}} % integers
+  \newcommand{\F}{\mathbb{F}} % field
+  \newcommand{\K}{\mathbb K} % field
+  \newcommand{\T}{\mathbb T} % circle
+\newcommand{\B}{\mathcal{B}} % ball
+  \newcommand{\pmset}[1]{\{-1,1\}^{#1}} % hypercube in +-1 basis
+  \newcommand{\bset}[1]{\{0,1\}^{#1}} % hypercube
+  \newcommand{\sphere}[1]{S^{#1-1}} % real unit sphere of dimension #1
+  \newcommand{\ball}[1]{B_{#1}} % real unit ball of dimension $1
+  \newcommand{\Orth}[1]{O(\R^{#1})} % orthogonal group
+  \DeclareMathOperator{\im}{im} % image
+  \DeclareMathOperator{\vspan}{Span} % kernel
+  \newcommand{\1}{\mathbf{1}}
+  \DeclareMathOperator{\Cball}{\mathcal C}
+  \DeclareMathOperator{\cay}{Cay} 
+  \DeclareMathOperator{\sol}{Sol} 
+\DeclareRobustCommand{\stirling}{\genfrac\{\}{0pt}{}}
+
+% Miscellaneous
+  \newcommand{\st}{:\,} % "such that" to define sets
+  \newcommand{\ie}{{i.e.}}  
+  \newcommand{\eg}{{e.g.}} 
+  \newcommand{\eps}{\varepsilon}
+  \newcommand{\ip}[1]{\langle #1 \rangle}
+  \newcommand{\cF}{{\mathcal F}}   
+  \DeclareMathOperator{\U}{\mathcal{U}}
+  \DeclareMathOperator{\sign}{sign}
+  \newcommand{\poly}{\mbox{\rm poly}}
+  \newcommand{\ceil}[1]{\lceil{#1}\rceil}
+  \newcommand{\floor}[1]{\lfloor{#1}\rfloor}
+  \DeclareMathOperator{\Tr}{\mathsf{Tr}}
+  \DeclareMathOperator{\diag}{diag}
+  \DeclareMathOperator{\patt}{patt}
+  \DeclareMathOperator{\argmin}{arg\,min}
+  \DeclareMathOperator{\spec}{Spec}
+  \DeclareMathOperator{\enc}{\sf Enc}
+  \DeclareMathOperator{\dec}{\sf Dec}
+  \DeclareMathOperator{\diam}{diam} 
+  \DeclareMathOperator{\spn}{span} 
+  \DeclareMathOperator{\geom}{gm}
+\DeclareMathOperator{\sinc}{sinc}
+\DeclareMathOperator{\disc}{disc}
+\DeclareMathOperator*{\argmax}{arg\,max}
+  \newcommand{\infnorm}{{\ell_\infty, \ldots, \ell_\infty}}
+  \newcommand{\pnorm}{{\ell_p,\dots,\ell_p}}
+  \newcommand{\tnorm}{{\ell_t,\dots,\ell_t}}
+  
+  
+% Enviroments
+  \newcommand{\beq}{\begin{equation}}
+  \newcommand{\eeq}{\end{equation}}
+  \newcommand{\beqn}{\begin{equation*}}
+  \newcommand{\eeqn}{\end{equation*}}
+  \newcommand{\beqr}{\begin{eqnarray}}
+  \newcommand{\eeqr}{\end{eqnarray}}
+  \newcommand{\beqrn}{\begin{eqnarray*}}
+  \newcommand{\eeqrn}{\end{eqnarray*}}
+  \newcommand{\bmline}{\begin{multline}}
+  \newcommand{\emline}{\end{multline}}
+  \newcommand{\bmlinen}{\begin{multline*}}
+  \newcommand{\emlinen}{\end{multline*}}
+  
+  \makeatletter
+
+% END OF SUPPLIED VARIABLES
+
+  \chead{\large \textbf{Homework 6}}
+
+  \lhead{\small
+    \textbf{{Comp Sci 335}}}
+
+  \rhead{\small \textbf{Name}: Caspar P., Rachel K.}
+
+  \setlength{\headheight}{20pt}
+  \setlength{\headsep}{16pt}                       
+  \headrule
+% execute homework commands
+
+\begin{document}
+
+\pagestyle{head}                % put header on every page
+
+\medskip
+ 
+\section{The language SLOW}
+
+\noindent We are designing a Turing machine to accept the language:
+
+\begin{align*}
+    \text{SLOW} = \{<\text{M}>\ |\  \text{ there exists an input } x \text{ such that machine M runs for at least } |x| \text{ steps.}\}
+\end{align*}
+
+\noindent where $|x|$ is the length of the string $x$. We assume that we are given $\Sigma$, or the input-alphabet of M.
+
+\section{High level overview}
+
+The TM for SLOW has 3 tapes: the control, the enumerator, and the simulator.
+
+\begin{itemize}
+    \item Control: where SLOW tracks how many states the simulation has passed through. Control decides whether to continue the simulation on the current input, go to the next input, or halt and accept.
+    \item Enumerator: enumerates all elements of $\Sigma *$ onto its tape.
+    \item Simulator: the tape where M is simulated
+\end{itemize}
+
+\section{Control tape}
+SLOW first runs the enumerator to produce one new input $x$ from $\Sigma *$ on the enumeration tape. Then SLOW clears the simulator and control tapes and copies the new input $x$ to both of them.
+
+\medskip
+
+\noindent SLOW progresses the simulation of M on the input:
+
+\begin{itemize}
+    \item SLOW finds the first unmarked letter in the control-tape input and marks it. 
+    \item SLOW runs M for one step on the input on the simulator tape s.t. M takes exactly one transition.
+    \item SLOW decides how to proceed based on the configuration of M and the control tape.
+\end{itemize}
+
+\noindent Scenarios:
+\begin{itemize}
+    \item If M has halted and there are more unmarked letters in the control-tape input, then M ran for less than $|x|$ steps, and SLOW proceeds to the next input by calling the enumerator again.
+    \item If M has not halted and there are more unmarked letters in the control-tape input, then SLOW progresses the simulation on the current input.
+    \item Otherwise, there are no unmarked letters on the control-tape, and M has run for at least as many steps as there are letters in the input $(|x|)$. Then, SLOW will halt and accept.
+\end{itemize}
+
+\section{Enumerator tape}
+
+The enumerator, when called, writes the next input onto the enumerator tape. This tape contains the current input being run by M, which is an element of $\Sigma *$. The enumerator writes increasingly larger elements of  $\Sigma *$.
+
+\section{Simulator tape}
+
+The simulator tape contains the memory needed for the machine M to run. It is cleared after each input is run and the new input to be run is written to it. As SLOW runs M, M is run on the input on the simulator tape.
+
+\end{document}

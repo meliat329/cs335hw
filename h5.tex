@@ -1,0 +1,182 @@
+\documentclass[11pt,addpoints,answers]{exam}
+
+% Packages
+\usepackage{fullpage}
+\usepackage{latexsym,amssymb,amsfonts,amsmath,mathrsfs,float, amsthm}
+\usepackage[font=small,labelfont=bf, width=.618\textwidth]{caption} % custom captions
+\usepackage{xcolor}
+\usepackage{tikz, graphics, enumerate}
+\usepackage{hyperref}
+
+
+% Paragraph indentation and spacing
+\newcommand{\parset}{
+  \setlength{\parskip}{3mm}
+    \setlength{\parindent}{0mm}}
+  
+% Probability
+  \DeclareMathOperator{\var}{Var}
+  \renewcommand{\Pr}{\mbox{\rm Pr}} 
+  \newcommand{\Exp}{{\mathbb{E}}}
+  \newcommand{\E}{\mathbb{E}}
+
+% Sets 
+  \newcommand{\R}{\mathbb{R}} % reals
+  \newcommand{\C}{\mathbb{C}} % complex numbers
+  \newcommand{\N}{\mathbb{N}} % natural numbers
+  \newcommand{\Z}{\mathbb{Z}} % integers
+  \newcommand{\F}{\mathbb{F}} % field
+  \newcommand{\K}{\mathbb K} % field
+  \newcommand{\T}{\mathbb T} % circle
+\newcommand{\B}{\mathcal{B}} % ball
+  \newcommand{\pmset}[1]{\{-1,1\}^{#1}} % hypercube in +-1 basis
+  \newcommand{\bset}[1]{\{0,1\}^{#1}} % hypercube
+  \newcommand{\sphere}[1]{S^{#1-1}} % real unit sphere of dimension #1
+  \newcommand{\ball}[1]{B_{#1}} % real unit ball of dimension $1
+  \newcommand{\Orth}[1]{O(\R^{#1})} % orthogonal group
+  \DeclareMathOperator{\im}{im} % image
+  \DeclareMathOperator{\vspan}{Span} % kernel
+  \newcommand{\1}{\mathbf{1}}
+  \DeclareMathOperator{\Cball}{\mathcal C}
+  \DeclareMathOperator{\cay}{Cay} 
+  \DeclareMathOperator{\sol}{Sol} 
+\DeclareRobustCommand{\stirling}{\genfrac\{\}{0pt}{}}
+
+% Miscellaneous
+  \newcommand{\st}{:\,} % "such that" to define sets
+  \newcommand{\ie}{{i.e.}}  
+  \newcommand{\eg}{{e.g.}} 
+  \newcommand{\eps}{\varepsilon}
+  \newcommand{\ip}[1]{\langle #1 \rangle}
+  \newcommand{\cF}{{\mathcal F}}   
+  \DeclareMathOperator{\U}{\mathcal{U}}
+  \DeclareMathOperator{\sign}{sign}
+  \newcommand{\poly}{\mbox{\rm poly}}
+  \newcommand{\ceil}[1]{\lceil{#1}\rceil}
+  \newcommand{\floor}[1]{\lfloor{#1}\rfloor}
+  \DeclareMathOperator{\Tr}{\mathsf{Tr}}
+  \DeclareMathOperator{\diag}{diag}
+  \DeclareMathOperator{\patt}{patt}
+  \DeclareMathOperator{\argmin}{arg\,min}
+  \DeclareMathOperator{\spec}{Spec}
+  \DeclareMathOperator{\enc}{\sf Enc}
+  \DeclareMathOperator{\dec}{\sf Dec}
+  \DeclareMathOperator{\diam}{diam} 
+  \DeclareMathOperator{\spn}{span} 
+  \DeclareMathOperator{\geom}{gm}
+\DeclareMathOperator{\sinc}{sinc}
+\DeclareMathOperator{\disc}{disc}
+\DeclareMathOperator*{\argmax}{arg\,max}
+  \newcommand{\infnorm}{{\ell_\infty, \ldots, \ell_\infty}}
+  \newcommand{\pnorm}{{\ell_p,\dots,\ell_p}}
+  \newcommand{\tnorm}{{\ell_t,\dots,\ell_t}}
+  
+  
+% Enviroments
+  \newcommand{\beq}{\begin{equation}}
+  \newcommand{\eeq}{\end{equation}}
+  \newcommand{\beqn}{\begin{equation*}}
+  \newcommand{\eeqn}{\end{equation*}}
+  \newcommand{\beqr}{\begin{eqnarray}}
+  \newcommand{\eeqr}{\end{eqnarray}}
+  \newcommand{\beqrn}{\begin{eqnarray*}}
+  \newcommand{\eeqrn}{\end{eqnarray*}}
+  \newcommand{\bmline}{\begin{multline}}
+  \newcommand{\emline}{\end{multline}}
+  \newcommand{\bmlinen}{\begin{multline*}}
+  \newcommand{\emlinen}{\end{multline*}}
+  
+  \makeatletter
+
+% END OF SUPPLIED VARIABLES
+
+  \chead{\large \textbf{Homework 5}}
+
+  \lhead{\small
+    \textbf{{Comp Sci 335}}}
+
+  \rhead{\small \textbf{Name}: Caspar P., Rachel K., Melia T.}
+
+  \setlength{\headheight}{20pt}
+  \setlength{\headsep}{16pt}                       
+  \headrule
+% execute homework commands
+
+\begin{document}
+
+\pagestyle{head}                % put header on every page
+
+\medskip
+ 
+\section{Alphabet of the Turing machine}
+
+\noindent We are designing a Turing machine to accept the language:
+
+\begin{align*}
+    L = \{w0^n \ |\  w \in \Sigma^* \text{ and } w \text{ has exactly } 2n \text{ distinct symbols from } \Sigma\}
+\end{align*}
+
+\noindent We specify the input alphabet $\Sigma^\prime$ and tape alphabet $\Gamma$ based on the $\Sigma$ given in the problem:
+
+\begin{align*}
+    \Sigma^\prime = \{\Sigma \cup 0\} \\
+    \Gamma = \{\sqcup, \dot{0}, X, Y, \Sigma^\prime \}
+\end{align*}
+
+\section{High level overview}
+
+\begin{enumerate}
+\item Check that the input $w$ matches the format of string accepted by $L$: some number of non-zero symbols, followed by some number of zeros.
+
+\item Determine the number of distinct symbols in $w$ by marking exactly $1$ occurrence of each distinct symbol with a symbol not in $\Sigma$, e.g. $X$, and all other characters in $w$ with another symbol not in $\Sigma$, e.g. $Y$. Therefore, the number of distinct symbols in $w$ will be the number of $X$s.
+
+\item Compare/count the number of distinct symbols in $w$ with the number of zeros in the input. This is done in rounds, by switching two $X$s to $Y$s, and one zero to a marked $\dot{0}$, s.t. an accepting string will consist of all $Y$s and $\dot{0}$ at the end of this phase.
+
+\end{enumerate}
+
+\section{Format phase}
+
+\noindent The head starts in a "find formatting 0s" phase, where it moves right over the input until it finds the first 0. If the head reaches the end of the input before it finds a 0, the TM does not reject, as we consider the empty string to be a valid string in the language $L$, and the head returns to the start of the input and goes to the next phase.
+
+\medskip
+
+\noindent When the head finds the first 0, it switches to "find formatting nonzeros" and continues moving right to the end of the input string. If the head finds any nonzero, non-blank symbols, it rejects. If it reaches the end of the input string without finding any nonzero symbols, the head returns to the start of the input and goes into the next phase.
+
+\section{Distinct phase}
+
+The head starts at the beginning of the input, and moves right until it reaches the first unmarked, nonzero symbol. Let this be $\sigma$. It is overwritten with a symbol not in $\Sigma$, e.g. $X$, and the Turing machine enters a state of "looking for $\sigma$".
+
+\medskip
+
+\noindent Then, the head moves to the right until it reaches a $0$ or the end of the string. Any occurrences of $\sigma$ that it encounters are overwritten with a different mark not in $\Sigma$, e.g. $Y$.
+
+\medskip
+
+\noindent When the head reaches the first $0$ or the end of the string, it returns to the beginning of the input and re-enters the initial state of "looking for unmarked, nonzero symbols".
+
+\medskip
+
+\noindent If there are no unmarked, nonzero symbols left (if the head reaches the first $0$ without finding an unmarked, nonzero symbol), then the Turing machine switches to the next phase.
+
+\section{Comparison phase}
+
+The head returns to the beginning of the input, then goes into a "searching for first $X$ to compare" state. It moves to the right until it reaches the first $X$. This $X$ is overwritten by $Y$. Then the TM goes into a "searching for second $X$ to compare" state. If the head finds another $X$ before reaching the zeros or the end of the input, then it goes into the "mark 0" state. Otherwise (if there were an odd number of $X$s), the TM rejects.
+
+\medskip 
+
+\noindent In the "mark 0" state, the TM moves to the right until it reaches the first unmarked $0$. If it finds an unmarked $0$, then it is marked $\dot{0}$. If no $0$ is found before the head reaches the end of the string, then the TM rejects (because there were too many distinct symbols in $w$).
+
+\medskip 
+
+\noindent After the $0$ is marked, the TM returns to the beginning of the input and re-enters the "searching for first $X$ to compare" state.
+
+\medskip 
+
+\noindent If the head while in the "searching for first $X$ to compare" state reaches a non $X$ or non $Y$ symbol, then the following occurs:
+
+\begin{itemize}
+\item If the symbol is a blank ($\sqcup$), or the end of the string, then the TM accepts, because this is the empty string.
+\item Otherwise, the TM is in a "searching for unmarked $0$ state". If any unmarked zeros are found, then there were not enough unique symbols in the input, and the TM rejects. Else, if the head reaches the end of the string without finding any unmarked zeros, then the TM accepts.
+\end{itemize}
+
+\end{document}
