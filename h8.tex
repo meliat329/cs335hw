@@ -1,0 +1,155 @@
+\documentclass[11pt,addpoints,answers]{exam}
+
+% Packages
+\usepackage{fullpage}
+\usepackage{latexsym,amssymb,amsfonts,amsmath,mathrsfs,float, amsthm}
+\usepackage[font=small,labelfont=bf, width=.618\textwidth]{caption} % custom captions
+\usepackage{xcolor}
+\usepackage{tikz, graphics, enumerate}
+\usepackage{hyperref}
+
+
+% Paragraph indentation and spacing
+\newcommand{\parset}{
+	\setlength{\parskip}{3mm}
+  	\setlength{\parindent}{0mm}}
+	
+% Probability
+  \DeclareMathOperator{\var}{Var}
+  \renewcommand{\Pr}{\mbox{\rm Pr}}	
+  \newcommand{\Exp}{{\mathbb{E}}}
+  \newcommand{\E}{\mathbb{E}}
+
+% Sets 
+  \newcommand{\R}{\mathbb{R}} % reals
+  \newcommand{\C}{\mathbb{C}} % complex numbers
+  \newcommand{\N}{\mathbb{N}} % natural numbers
+  \newcommand{\Z}{\mathbb{Z}} % integers
+  \newcommand{\F}{\mathbb{F}} % field
+  \newcommand{\K}{\mathbb K} % field
+  \newcommand{\T}{\mathbb T} % circle
+\newcommand{\B}{\mathcal{B}} % ball
+  \newcommand{\pmset}[1]{\{-1,1\}^{#1}} % hypercube in +-1 basis
+  \newcommand{\bset}[1]{\{0,1\}^{#1}} % hypercube
+  \newcommand{\sphere}[1]{S^{#1-1}} % real unit sphere of dimension #1
+  \newcommand{\ball}[1]{B_{#1}} % real unit ball of dimension $1
+  \newcommand{\Orth}[1]{O(\R^{#1})} % orthogonal group
+  \DeclareMathOperator{\im}{im} % image
+  \DeclareMathOperator{\vspan}{Span} % kernel
+  \newcommand{\1}{\mathbf{1}}
+  \DeclareMathOperator{\Cball}{\mathcal C}
+  \DeclareMathOperator{\cay}{Cay} 
+  \DeclareMathOperator{\sol}{Sol} 
+\DeclareRobustCommand{\stirling}{\genfrac\{\}{0pt}{}}
+
+% Miscellaneous
+  \newcommand{\st}{:\,} % "such that" to define sets
+  \newcommand{\ie}{{i.e.}}  
+  \newcommand{\eg}{{e.g.}} 
+  \newcommand{\eps}{\varepsilon}
+  \newcommand{\ip}[1]{\langle #1 \rangle}
+  \newcommand{\cF}{{\mathcal F}}   
+  \DeclareMathOperator{\U}{\mathcal{U}}
+  \DeclareMathOperator{\sign}{sign}
+  \newcommand{\poly}{\mbox{\rm poly}}
+  \newcommand{\ceil}[1]{\lceil{#1}\rceil}
+  \newcommand{\floor}[1]{\lfloor{#1}\rfloor}
+  \DeclareMathOperator{\Tr}{\mathsf{Tr}}
+  \DeclareMathOperator{\diag}{diag}
+  \DeclareMathOperator{\patt}{patt}
+  \DeclareMathOperator{\argmin}{arg\,min}
+  \DeclareMathOperator{\spec}{Spec}
+  \DeclareMathOperator{\enc}{\sf Enc}
+  \DeclareMathOperator{\dec}{\sf Dec}
+  \DeclareMathOperator{\diam}{diam} 
+  \DeclareMathOperator{\spn}{span} 
+  \DeclareMathOperator{\geom}{gm}
+\DeclareMathOperator{\sinc}{sinc}
+\DeclareMathOperator{\disc}{disc}
+\DeclareMathOperator*{\argmax}{arg\,max}
+  \newcommand{\infnorm}{{\ell_\infty, \ldots, \ell_\infty}}
+  \newcommand{\pnorm}{{\ell_p,\dots,\ell_p}}
+  \newcommand{\tnorm}{{\ell_t,\dots,\ell_t}}
+  
+  
+% Enviroments
+  \newcommand{\beq}{\begin{equation}}
+  \newcommand{\eeq}{\end{equation}}
+  \newcommand{\beqn}{\begin{equation*}}
+  \newcommand{\eeqn}{\end{equation*}}
+  \newcommand{\beqr}{\begin{eqnarray}}
+  \newcommand{\eeqr}{\end{eqnarray}}
+  \newcommand{\beqrn}{\begin{eqnarray*}}
+  \newcommand{\eeqrn}{\end{eqnarray*}}
+  \newcommand{\bmline}{\begin{multline}}
+  \newcommand{\emline}{\end{multline}}
+  \newcommand{\bmlinen}{\begin{multline*}}
+  \newcommand{\emlinen}{\end{multline*}}
+  
+  \makeatletter
+
+% END OF SUPPLIED VARIABLES
+
+  \chead{\large \textbf{Homework 8}}
+
+  \lhead{\small
+    \textbf{{Comp Sci 335}}}
+
+  \rhead{\small \textbf{Name}: Caspar P., Rachel K.}
+
+  \setlength{\headheight}{20pt}
+  \setlength{\headsep}{16pt}                       
+  \headrule
+% execute homework commands
+
+\begin{document}
+
+\pagestyle{head}                % put header on every page
+
+\medskip
+ 
+\section{Claim}
+
+We will show that $C(xy) \leq 2 C(x) + C(y) + c$ by showing that there exists a TM $M^\prime$ which can write $xy$ to its tape, by taking in a special concatenation of $<x, y>$ and extracting $x$ and $y$ from it.
+
+\section{Concatenation algorithm}
+
+The concatenation algorithm takes in an ordered pair of strings $<x,y>$ and produces a new string $0^{\text{len}(x)}1xy$. From this string of length $2x + y + 1$, it is possible to recover $x$ and $y$.
+
+\section{$M^\prime$ to extract $xy$ from the concatenation}
+
+Let $M^\prime$ be a Turning machine that takes in the concatenation $0^{\text{len}(x)}1xy$ and returns $xy$.
+
+\begin{enumerate}
+    \item Read in all the 0s in the input until a 1 is reached
+    \item Repeat until there are no more unmarked 0s before the 1: mark the first unmarked character after the 1, then return to the start of the string and mark the first unmarked character before the 1.
+    \item Once all the 0s are marked off, the marked characters after the 1 are x, and the unmarked characters after the 1 are y.
+\end{enumerate}
+
+\section{Kolmogorov complexity of $M^\prime$}
+
+From the definition of Kolmogorov complexity, there exists a TM $M_1$ such that $M_1(a) = x$, and analogously there exists a TM $M_2$ such that $M_2(b) = y$. Then:
+\begin{align*}
+    C(x) = \text{len}(a) \\
+    C(y) = \text{len}(b)
+\end{align*}
+
+From our definition above,
+
+\begin{align*}
+    C_{M^\prime} \leq 2 \text{len}(a) + \text{len}(b) + c_{M^\prime}
+\end{align*}
+
+By substitution,
+
+\begin{align*}
+     C_{M^\prime}(xy) \leq 2 C(x) + C(y) + c_{M^\prime}
+\end{align*}
+
+By the invariance theorem, 
+
+\begin{align*}
+    C(xy) \leq 2 C(x) + C(y) + c_{M^\prime}
+\end{align*}
+
+\end{document} 

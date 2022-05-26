@@ -1,0 +1,159 @@
+\documentclass[11pt,addpoints,answers]{exam}
+
+% Packages
+\usepackage{fullpage}
+\usepackage{latexsym,amssymb,amsfonts,amsmath,mathrsfs,float, amsthm}
+\usepackage[font=small,labelfont=bf, width=.618\textwidth]{caption} % custom captions
+\usepackage{xcolor}
+\usepackage{tikz, graphics, enumerate}
+\usepackage{hyperref}
+
+
+% Paragraph indentation and spacing
+\newcommand{\parset}{
+  \setlength{\parskip}{3mm}
+    \setlength{\parindent}{0mm}}
+  
+% Probability
+  \DeclareMathOperator{\var}{Var}
+  \renewcommand{\Pr}{\mbox{\rm Pr}} 
+  \newcommand{\Exp}{{\mathbb{E}}}
+  \newcommand{\E}{\mathbb{E}}
+
+% Sets 
+  \newcommand{\R}{\mathbb{R}} % reals
+  \newcommand{\C}{\mathbb{C}} % complex numbers
+  \newcommand{\N}{\mathbb{N}} % natural numbers
+  \newcommand{\Z}{\mathbb{Z}} % integers
+  \newcommand{\F}{\mathbb{F}} % field
+  \newcommand{\K}{\mathbb K} % field
+  \newcommand{\T}{\mathbb T} % circle
+\newcommand{\B}{\mathcal{B}} % ball
+  \newcommand{\pmset}[1]{\{-1,1\}^{#1}} % hypercube in +-1 basis
+  \newcommand{\bset}[1]{\{0,1\}^{#1}} % hypercube
+  \newcommand{\sphere}[1]{S^{#1-1}} % real unit sphere of dimension #1
+  \newcommand{\ball}[1]{B_{#1}} % real unit ball of dimension $1
+  \newcommand{\Orth}[1]{O(\R^{#1})} % orthogonal group
+  \DeclareMathOperator{\im}{im} % image
+  \DeclareMathOperator{\vspan}{Span} % kernel
+  \newcommand{\1}{\mathbf{1}}
+  \DeclareMathOperator{\Cball}{\mathcal C}
+  \DeclareMathOperator{\cay}{Cay} 
+  \DeclareMathOperator{\sol}{Sol} 
+\DeclareRobustCommand{\stirling}{\genfrac\{\}{0pt}{}}
+
+% Miscellaneous
+  \newcommand{\st}{:\,} % "such that" to define sets
+  \newcommand{\ie}{{i.e.}}  
+  \newcommand{\eg}{{e.g.}} 
+  \newcommand{\eps}{\varepsilon}
+  \newcommand{\ip}[1]{\langle #1 \rangle}
+  \newcommand{\cF}{{\mathcal F}}   
+  \DeclareMathOperator{\U}{\mathcal{U}}
+  \DeclareMathOperator{\sign}{sign}
+  \newcommand{\poly}{\mbox{\rm poly}}
+  \newcommand{\ceil}[1]{\lceil{#1}\rceil}
+  \newcommand{\floor}[1]{\lfloor{#1}\rfloor}
+  \DeclareMathOperator{\Tr}{\mathsf{Tr}}
+  \DeclareMathOperator{\diag}{diag}
+  \DeclareMathOperator{\patt}{patt}
+  \DeclareMathOperator{\argmin}{arg\,min}
+  \DeclareMathOperator{\spec}{Spec}
+  \DeclareMathOperator{\enc}{\sf Enc}
+  \DeclareMathOperator{\dec}{\sf Dec}
+  \DeclareMathOperator{\diam}{diam} 
+  \DeclareMathOperator{\spn}{span} 
+  \DeclareMathOperator{\geom}{gm}
+\DeclareMathOperator{\sinc}{sinc}
+\DeclareMathOperator{\disc}{disc}
+\DeclareMathOperator*{\argmax}{arg\,max}
+  \newcommand{\infnorm}{{\ell_\infty, \ldots, \ell_\infty}}
+  \newcommand{\pnorm}{{\ell_p,\dots,\ell_p}}
+  \newcommand{\tnorm}{{\ell_t,\dots,\ell_t}}
+  
+  
+% Enviroments
+  \newcommand{\beq}{\begin{equation}}
+  \newcommand{\eeq}{\end{equation}}
+  \newcommand{\beqn}{\begin{equation*}}
+  \newcommand{\eeqn}{\end{equation*}}
+  \newcommand{\beqr}{\begin{eqnarray}}
+  \newcommand{\eeqr}{\end{eqnarray}}
+  \newcommand{\beqrn}{\begin{eqnarray*}}
+  \newcommand{\eeqrn}{\end{eqnarray*}}
+  \newcommand{\bmline}{\begin{multline}}
+  \newcommand{\emline}{\end{multline}}
+  \newcommand{\bmlinen}{\begin{multline*}}
+  \newcommand{\emlinen}{\end{multline*}}
+  
+  \makeatletter
+
+% END OF SUPPLIED VARIABLES
+
+  \chead{\large \textbf{Homework 7}}
+
+  \lhead{\small
+    \textbf{{Comp Sci 335}}}
+
+  \rhead{\small \textbf{Name}: Caspar P., Rachel K.}
+
+  \setlength{\headheight}{20pt}
+  \setlength{\headsep}{16pt}                       
+  \headrule
+% execute homework commands
+
+\begin{document}
+
+\pagestyle{head}                % put header on every page
+
+\medskip
+ 
+\section{Claim}
+
+We will show that the $101011$ problem is not co-recognizable by showing that HALT$_{\text{TM}}$ is mapping reducible to the language L, where:
+
+\begin{align*}
+    \text{HALT}_{\text{TM}} = \{ \langle M, w \rangle \ | \ M \text{ halts on some input } w \} \\
+    \text{L}_{\text{TM}} = \{ \langle M \rangle \ | \ M \text{ is a Turing machine that accepts the string } 101011 \}
+\end{align*}
+
+\noindent By showing $\text{HALT}_\text{TM} \leq_m L_\text{TM}$, and because HALT is not co-recognizable, then we show that $L_\text{TM}$ is not co-recognizable.
+
+\section{Definition of $f$}
+
+$f$: Given any machine $M$ and input $w$, we construct the machine $M^\prime$ as follows:
+
+\[
+M^\prime (x) =
+\left\{
+\begin{array}{ll}
+    x = w \wedge M(w) \text{ halts} & M^\prime \text{ accepts} \\
+    x \neq w \wedge M(w) \text{ halts} & M^\prime \text{ rejects} \\
+    M(w) \text{ does not halt} & M^\prime \text{ does not halt}
+\end{array}
+\right.
+\]
+
+\noindent First, $M^\prime$ runs $M$ on $w$.
+
+\noindent If $M(w)$ halts, then $M^\prime$ will compare $x$ to $101011$: accept if $x == 101011$ and reject otherwise.
+
+\noindent If $M(w)$ does not halt, then $M^\prime$ does not halt.
+
+\section{Proof that $f$ is a mapping reduction}
+
+To show that $f$ is a valid mapping reduction, we must show that
+
+\begin{align*}
+    1. \ (M, w) \in \text{HALT}_\text{TM} \implies M^\prime \in \text{L}_\text{TM} \\
+    2. \ (M, w) \notin \text{HALT}_\text{TM} \implies M^\prime \notin \text{L}_\text{TM}
+\end{align*}
+
+\noindent Proof.
+
+\begin{enumerate}
+    \item If $(M, w) \in \text{HALT}_\text{TM}$, then $M(w)$ halts. Then, $M^\prime$ is a decider for L$_\text{TM}$ by comparing $x$ to $101011$, so $M^\prime \in \text{L}_\text{TM}$.
+    \item If $(M, w) \notin \text{HALT}_\text{TM}$, then $M(w)$ does not halt and $M^\prime$ must run forever. Since $M^\prime$ will not accept any input including $101011$, then $M^\prime$ does not decide $L$, and $M^\prime \notin \text{L}_\text{TM}$.
+\end{enumerate}
+
+\end{document} 
